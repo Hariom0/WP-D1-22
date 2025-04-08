@@ -1,152 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern Calculator</title>
-    <link rel="stylesheet" href="styles.css">
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Arial', sans-serif;
-        }
-
-        body {
-            background: linear-gradient(135deg, #141e30, #243b55);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            color: white;
-        }
-
-        .calculator-container {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
-            text-align: center;
-            width: 300px;
-        }
-
-        h1 {
-            font-size: 26px;
-            margin-bottom: 15px;
-            color: #00c6ff;
-        }
-
-        input[type="number"] {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border: none;
-            border-radius: 8px;
-            font-size: 18px;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            text-align: center;
-        }
-
-        input::placeholder {
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .buttons {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 15px;
-        }
-
-        button {
-            padding: 12px 18px;
-            border: none;
-            border-radius: 8px;
-            font-size: 18px;
-            font-weight: bold;
-            color: white;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        button:nth-child(1) { background: #28a745; } /* Green (+) */
-        button:nth-child(2) { background: #dc3545; } /* Red (-) */
-        button:nth-child(3) { background: #ffc107; } /* Yellow (*) */
-        button:nth-child(4) { background: #007bff; } /* Blue (/) */
-
-        button:hover {
-            opacity: 0.8;
-            transform: scale(1.05);
-        }
-
-        h3 {
-            font-size: 22px;
-            margin-top: 20px;
-        }
-
-        #result {
-            font-size: 26px;
-            font-weight: bold;
-            color: #ffeb3b;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Temperature Conversion Tool</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f8ff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      max-width: 400px;
+      width: 100%;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    label {
+      display: block;
+      margin: 0.5rem 0 0.2rem;
+    }
+    input[type="number"] {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .radio-group {
+      margin-bottom: 1rem;
+    }
+    .radio-group input {
+      margin-right: 0.5rem;
+    }
+    button {
+      width: 100%;
+      padding: 0.6rem;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    h2 {
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+    #result {
+      color: #007bff;
+    }
+  </style>
 </head>
 <body>
+  <div class="container">
+    <h1>Temperature Conversion Tool</h1>
+    <form id="tempForm">
+      <label for="temperature">Enter Temperature:</label>
+      <input type="number" id="temperature" placeholder="Enter value" required />
+      <div class="radio-group">
+        <input type="radio" id="cToF" name="conversion" value="CtoF" checked />
+        <label for="cToF">Celsius to Fahrenheit</label><br />
+        <input type="radio" id="fToC" name="conversion" value="FtoC" />
+        <label for="fToC">Fahrenheit to Celsius</label>
+      </div>
+      <button type="button" onclick="convertTemperature()">Convert</button>
+    </form>
+    <h2>Converted Temperature: <span id="result">---</span></h2>
+  </div>
 
-    <div class="calculator-container">
-        <h1>Modern Calculator</h1>
-        <form name="calculator">
-            <input type="number" name="num1" id="num1" placeholder="Enter first number" required>
-            <input type="number" name="num2" id="num2" placeholder="Enter second number" required>
-            
-            <div class="buttons">
-                <button type="button" onclick="performOperation('+')">+</button>
-                <button type="button" onclick="performOperation('-')">-</button>
-                <button type="button" onclick="performOperation('*')">*</button>
-                <button type="button" onclick="performOperation('/')">/</button>
-            </div>
-            
-            <h3>Result: <span id="result">0</span></h3>
-        </form>
-    </div>
+  <script>
+    function convertTemperature() {
+      let temperature = document.getElementById("temperature").value;
 
-    <script>
-        function performOperation(operator) {
-            let num1 = parseFloat(document.calculator.num1.value);
-            let num2 = parseFloat(document.calculator.num2.value);
-            let result = 0;
+      if (isNaN(temperature) || temperature === "") {
+        alert("Please enter a valid temperature.");
+        return;
+      }
 
-            if (isNaN(num1) || isNaN(num2)) {
-                document.getElementById('result').innerText = "Enter valid numbers!";
-                return;
-            }
+      let conversionType = document.querySelector('input[name="conversion"]:checked').value;
+      let result;
 
-            switch (operator) {
-                case '+':
-                    result = num1 + num2;
-                    break;
-                case '-':
-                    result = num1 - num2;
-                    break;
-                case '*':
-                    result = num1 * num2;
-                    break;
-                case '/':
-                    if (num2 === 0) {
-                        document.getElementById('result').innerText = "Error: Division by zero!";
-                        return;
-                    }
-                    result = num1 / num2;
-                    break;
-                default:
-                    document.getElementById('result').innerText = "Invalid operation!";
-                    return;
-            }
+      if (conversionType === "CtoF") {
+        result = (temperature * 9/5) + 32;
+        result = result.toFixed(2);
+      } else if (conversionType === "FtoC") {
+        result = (temperature - 32) * 5/9;
+        result = result.toFixed(2);
+      }
 
-            document.getElementById('result').innerText = result;
-        }
-    </script>
+      document.getElementById("result").textContent = result + "°";
+    }
+  </script>
 </body>
 </html>
